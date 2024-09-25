@@ -1,10 +1,10 @@
 import Header from "components/header";
 import Footer from "components/footer";
-import NotesCard from "components/notes-card";
+import NotesCard from "components/notesCard";
 import Image from "next/image";
 import Link from "next/link";
-import { MdBookmarkBorder } from "react-icons/md";
 import { GoShareAndroid } from "react-icons/go";
+import BookmarkButton from "components/bookmarkButton";
 
 export default function Page() {
   return (
@@ -65,9 +65,7 @@ export default function Page() {
               >
                 <button>Download</button>
               </Link>
-              <button>
-                <MdBookmarkBorder size={40} />
-              </button>
+              <BookmarkButton />
             </div>
           </div>
         </div>

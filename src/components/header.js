@@ -1,7 +1,10 @@
+"use client";
 import { Redressed } from "next/font/google";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import SearchBar from "./searchBar";
-import { TbCategory2, TbBookmark, TbBookmarks } from "react-icons/tb";
+import { TbCategory2, TbBookmarks } from "react-icons/tb";
+import Drawer from "./drawer";
 
 const redressed = Redressed({
   subsets: ["latin"],
@@ -14,6 +17,14 @@ export default function Header({
   hideSearchBar,
   hideCategoryMenuOpenBtn,
 }) {
+  const [showExploreDrawer, setShowExploreDrawer] = useState(false);
+  const [showBookmarksDrawer, setShowBookmarksDrawer] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    setBookmarks(JSON.parse(localStorage.getItem("bookmarks")) || []);
+  }, []);
+
   return (
     <>
       <header
@@ -34,17 +45,92 @@ export default function Header({
         ) : null}
         <div className="flex items-center justify-center gap-4">
           {!hideCategoryMenuOpenBtn ? (
-            <button className="hover:scale-105">
+            <button
+              className="hover:scale-105"
+              onClick={() => setShowExploreDrawer(true)}
+            >
               <TbCategory2 size={35} />
             </button>
           ) : null}
-          <button className="relative rounded-full hover:scale-105">
+          <button
+            onClick={() => setShowBookmarksDrawer(true)}
+            className="relative rounded-full hover:scale-105"
+          >
             <TbBookmarks size={35} />
-            {/* <span className="absolute right-[1px] top-[-5px] flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
-              0
-            </span> */}
+            {bookmarks.length > 0 && (
+              <span className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
+                {bookmarks.length}
+              </span>
+            )}
           </button>
         </div>
+        {showExploreDrawer ? (
+          <Drawer title="Explore" setShowDrawer={setShowExploreDrawer}>
+            {" "}
+            <div className="md:hidden">
+              <SearchBar />
+            </div>
+            <div className="flex flex-wrap justify-start gap-4">
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                💻 Coding
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                🕸️ Web
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                ➕ Maths
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                💊 Bio
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                🧠 Science
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                🕸️ Web
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                🪨 Geography
+              </Link>
+              <Link
+                href="/category"
+                className="rounded-full border border-gray-300 px-4 py-2"
+              >
+                💊 Bio
+              </Link>
+            </div>
+          </Drawer>
+        ) : null}
+        {showBookmarksDrawer ? (
+          <Drawer title="Bookmarks" setShowDrawer={setShowBookmarksDrawer}>
+            <div>
+              {bookmarks.map((bookmark, index) => (
+                <h3 key={index}>{bookmark}</h3>
+              ))}
+            </div>
+          </Drawer>
+        ) : null}
       </header>
     </>
   );

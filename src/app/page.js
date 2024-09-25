@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "components/header";
 import Footer from "components/footer";
-import SearchBar from "components/search-bar";
+import SearchBar from "components/searchBar";
 
 export default function Page() {
   return (
